@@ -1,0 +1,12 @@
+df <- read.table("household_power_consumption.txt", header = TRUE, sep = ";")
+df1 <- df[(df$Date=="1/2/2007" | df$Date=="2/2/2007"),]
+df1$dtime <- paste(df1$Date, df1$Time)
+df1$dtime <- strptime(df1$dtime, "%d/%m/%Y %H:%M:%S")
+df1$Sub_metering_1 <- as.numeric(levels(df1[,7])[df1[,7]])
+df1$Sub_metering_2 <- as.numeric(levels(df1[,8])[df1[,8]])
+png(file="plot3.png")
+with(df1, plot(dtime,Sub_metering_1,type="l",xlab="",ylab="Energy sub metering"))
+with(df1, lines(dtime,Sub_metering_2,col="Red"))
+with(df1, lines(dtime,Sub_metering_3,col="blue"))
+legend("topright",pch="_",bty="o",col=c("black","red","blue"),legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+dev.off()
